@@ -130,7 +130,7 @@ deleted = "🗑"
 [hostname]
 ssh_only = false
 #format = "🚀 im_parth "
-format =  "[🚀 im_parth](bold yellow) [\u276f](bold red) [\u276f](bold green) [\u276f](bold yellow) "
+format =  "[🚀 im_parth](bold yellow) [❯](bold red) [❯](bold green) [❯](bold yellow) "
 trim_at = "."
 disabled = false
 
