@@ -1,3 +1,10 @@
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
@@ -95,12 +102,28 @@ source $ZSH/oh-my-zsh.sh
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
 # For a full list of active aliases, run `alias`.
 #
+
+# Variables
+
+CUSTOM_NVIM_PATH=$HOME/nvim.appimage
+
+
 #  aliases
 # system
 alias zshconfig="nano ~/.zshrc"
 alias nvimconfig="cd $HOME/.config/nvim"
 alias nv="/home/im_parth/Downloads/neovide/target/release/neovide"
 alias cls="clear"
+alias ls="lsd"
+#alias cat="batcat"
+alias web="cd $HOME/FromDesktop/Web"
+alias app="cd $HOME/FromDesktop/Android_Projects"
+alias home="cd ~/"
+alias sau="sudo apt update && apt upgrade"
+# vs-code
+alias "code"="code . && exit"
+
+alias nvim="~/.\/nvim.appimage"
 
 # flutter 
 alias emulator="flutter emulators --launch sdk gphone64 x86 64"
@@ -109,23 +132,50 @@ alias fr="flutter run"
 # git 
 
 alias gi="git init"
+alias ga="git add ."
 alias gp='git push' 
 alias graph="git log --oneline --graph --decorate --all"
 alias gs="git status"
-alias gc="git commit -a -m"
+alias gc="git commit -m"
 alias gcb="git checkout -b"
+alias gv="gh repo view --web"
+alias gpull="git pull"
+#yarn
+alias ya="yarn add"
 
 export PATH=$HOME/Downloads/flutter_linux_1.22.5-stable/flutter/bin:$PATH
-export PATH=$HOME/Downloads/node-v14.15.3-linux-x64/bin:$PATH
+export PATH=$HOME/Downloads/node-v16.13.0-linux-x64/bin:$PATH
 export ANDROID_HOME=$HOME/Android/Sdk
 export JAVA_HOME=/usr/lib/jvm/jdk-15.0.1
 export PATH=$PATH:$JAVA_HOME/bin
 export PATH=$PATH:$ANDROID_HOME/tools
 export PATH=$HOME/Android/Sdk/platform-tools:$PATH
+export PATH=$HOME/Downloads/ideaIU-2021.2.3/idea-IU-212.5457.46/bin:$PATH
 export PATH=$HOME/Downloads/flutter_linux_1.22.5-stable/flutter/.pub-cache/bin:$PATH
+export PATH="${PATH}:${HOME}/.local/bin/"
+export PATH="/home/im_parth/.local/share/solana/install/active_release/bin:$PATH"
+export PATH=$HOME/Downloads/go1.16.6.linux-amd64/go/bin:$PATH
+export PATH=$HOME/.local/share/nvim/lsp_servers:$PATH
+export PATH=$HOME/.local/share/nvim/lsp_servers/rust:$PATH
+export PATH=$HOME/.local/share/nvim/lsp_servers/jdtls:$PATH
+export PATH=$HOME/.local/share/nvim/lsp_servers/clangd:$PATH
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 ### RANDOM COLOR SCRIPT ###
 colorscript random
 
 eval "$(starship init zsh)"
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# Import colorscheme from 'wal' asynchronously
+# &   # Run the process in the background.
+# ( ) # Hide shell job control messages.
+(cat ~/.cache/wal/sequences &)
+
+# Alternative (blocks terminal for 0-3ms)
+cat ~/.cache/wal/sequences
+
+# To add support for TTYs this line can be optionally added.
+source ~/.cache/wal/colors-tty.sh
