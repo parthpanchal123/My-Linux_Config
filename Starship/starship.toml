@@ -63,7 +63,7 @@ style = "bold green"
 error_symbol = "[✗](bold red) "
 use_symbol_for_status = true
 # Replace the "❯" symbol in the prompt with "➜"                  # The name of the module we are configuring is "character"
-success_symbol = "[➜](bold green)"     # The "success_symbol" segment is being set to "➜" with the color "bold green"
+success_symbol = "[>](bold green)"     # The "success_symbol" segment is being set to "➜" with the color "bold green"
 
 
 [cmd_duration]
@@ -75,7 +75,7 @@ format = "in [$duration]($style) "
 [directory]
 truncation_length = 6
 truncate_to_repo = true
-truncation_symbol = "…/"
+truncation_symbol = "../"
 format = " in [$path]($style)[$read_only]($read_only_style) "
 style = "bold cyan"
 disabled = false
