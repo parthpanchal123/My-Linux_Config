@@ -154,10 +154,10 @@ bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcu
 mode "resize" {
         # These bindings trigger as soon as you enter the resize mode
 
-        # Pressing left will shrink the window窶冱 width.
-        # Pressing right will grow the window窶冱 width.
-        # Pressing up will shrink the window窶冱 height.
-        # Pressing down will grow the window窶冱 height.
+        # Pressing left will shrink the window’s width.
+        # Pressing right will grow the window’s width.
+        # Pressing up will shrink the window’s height.
+        # Pressing down will grow the window’s height.
         bindsym j resize shrink width 10 px or 10 ppt
         bindsym k resize grow height 10 px or 10 ppt
         bindsym l resize shrink height 10 px or 10 ppt
@@ -184,39 +184,48 @@ bindsym $mod+r mode "resize"
 #}
 
 # Add a Rofi shortcut
-bindcode 133 exec rofi -show run 
+bindcode 133 exec ulauncher
 
 # Display wallpaper 
 
-exec_always feh --bg-fill /home/im_parth/Pictures/Wallpapers/nord.png
+exec_always feh --bg-fill /home/im_parth/Pictures/Wallpapers/astronaut_dark.png
+
 
 # Add Polybar startup
-exec_always ~/.config/polybar/blocks/scripts/pywal.sh ~/Pictures/Wallpapers/nord.png
+exec_always ~/.config/polybar/blocks/scripts/pywal.sh ~/Pictures/Wallpapers/astronaut_dark.png
 exec_always ~/.config/polybar/launch.sh --blocks
 # exec_always polybar example
 
 # Add Programs to specific workspaces
 for_window [class="Brave-browser"] move to workspace $ws2
 for_window [class="Code"] move to workspace $ws3
-for_window [class="Brave-browser" title="Youtube Music"] move to workspace $ws4
-for_window [class="Microsoft Teams - Preview"] move to workspace $ws5
-for_window [class="Org.gnome.Nautilus"] move to workspace $ws6
+for_window [class="jetbrains-idea"] move to workspace $ws3
+for_window [class="Microsoft Teams - Preview"] move to workspace $ws4
+for_window [class="Org.gnome.Nautilus"] move to workspace $ws5
+for_window [class="discord"] move to workspace $ws6
+for_window [class="notion-desktop"] move to workspace $ws7
+for_window [class="obs"] move to workspace $ws8
 for_window [class="Gnome-control-center"] floating enable
-for_window [class="Microsoft Teams - Preview"] move to workspace $ws5
 
 # i3-gaps stuff
-for_window [class=".*"] border pixel 0
-gaps inner 28
+for_window [class=".*"] border pixel 1 
 
-smart_gaps on
-smart_gaps inverse_outer
-
-smart_borders on
-smart_borders no_gaps
-
+gaps horizontal 5
+gaps vertical 5
+gaps inner 10
+workspace 2 gaps inner 0
 #gaps inner 20
 
 # Add a compositor
-exec_always picom 
+exec_always picom --experimental-backends --backend glx
 
+# Startup programs 
+exec brave-browser
+exec idea.sh
+#exec /home/im_parth/Downloads/ideaIC-2021.2.3/idea-IC-212.5457.46/bin/.idea.sh
 
+# Always start clipboard copy 
+exec_always copyq
+
+#I3 lock keybinding
+bindsym $mod+z exec i3lock -i  /home/im_parth/Pictures/Wallpapers/nord.png
