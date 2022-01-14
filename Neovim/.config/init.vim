@@ -5,6 +5,16 @@ call plug#begin()
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 
+" Debugger 
+Plug 'puremourning/vimspector'
+Plug 'szw/vim-maximizer'
+
+" Autosave 
+Plug 'Pocco81/AutoSave.nvim'
+
+" Highlight indentation
+Plug 'lukas-reineke/indent-blankline.nvim'
+
 " Themes and related stuff
 Plug 'joshdick/onedark.vim'
 Plug 'flazz/vim-colorschemes'
@@ -13,10 +23,19 @@ Plug 'enricobacis/vim-airline-clock'
 Plug 'bluz71/vim-nightfly-guicolors'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+Plug 'rebelot/kanagawa.nvim'
+Plug 'marko-cerovac/material.nvim'
+Plug 'feline-nvim/feline.nvim'
 
 " Telescope related
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-lua/plenary.nvim'
+
+" Flutter related
+Plug 'akinsho/flutter-tools.nvim'
+
+" Harpoon 
+Plug 'ThePrimeagen/harpoon'
 
 " coc related
 Plug 'fannheyward/telescope-coc.nvim'
@@ -33,7 +52,7 @@ Plug 'williamboman/nvim-lsp-installer'
 " Tree
 Plug 'kyazdani42/nvim-tree.lua'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
-
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 " Git related plugins 
 Plug 'mhinz/vim-signify'
 Plug 'APZelos/blamer.nvim'
@@ -41,6 +60,11 @@ Plug 'tpope/vim-fugitive'
 Plug 'junegunn/gv.vim'
 Plug 'tpope/vim-rhubarb'
 
+" commenting stuff 
+Plug 'tpope/vim-commentary'
+
+" Terminal related
+Plug 'akinsho/toggleterm.nvim'
 call plug#end()
 
 
@@ -57,6 +81,11 @@ set t_Co=256
 set termguicolors
 set encoding=UTF-8
 
+
+
+" This line enables the true color support.
+let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+
 " This is the leader key
 let mapleader = " "
 
@@ -66,7 +95,15 @@ let g:smoothie_enabled = 1
 "      \ }
 let g:airline_theme='onedark'
 let g:airline_powerline_fonts = 1
+
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#formatter = 'unique_tail'
+
 inoremap jj <ESC>
+
+
+" paste under cursor
+nmap p :pu<CR>
 
 " Git Gutter related
 let g:gitgutter_set_sign_backgrounds = 1
@@ -84,10 +121,10 @@ let g:blamer_show_in_insert_modes = 0
 " Color Scheme and syntax
 let g:onedark_hide_endofbuffer = 1 
 let g:onedark_termcolors = 256
-let g:onedark_terminal_italics = 1
+let g:offedark_terminal_italics = 1
 let g:airline#extensions#tabline#enabled = 1
 syntax on
-colorscheme deep-space
+
 " drop vi support - kept for vim compatibility but not needed for nvim
 set nocompatible
 
@@ -118,7 +155,7 @@ set nobackup
 set noswapfile
 
 " line numbers and distances
-set rnu 
+ set nu rnu
 
 " number of lines offset when jumping
 set scrolloff=2
@@ -187,7 +224,12 @@ syntax enable
 set background=dark
 " ---------------------------------------------------------------------------
 
-
+" Signify related
+let g:signify_sign_add               = '+'
+let g:signify_sign_delete            = '-'
+let g:signify_sign_change            = '*'
+let g:signify_sign_change_delete     = '*_'
+let g:signify_sign_delete_first_line = '‾'
 
 " Telescope related
 nnoremap <C-p> :Telescope file_browser<CR>
@@ -230,26 +272,32 @@ nnoremap n nzzzv
 nnoremap N Nzzzv
 nnoremap J mzJ`z
 nnoremap <C-j> :cnext<CR>zzzv  
+nnoremap Y y$
 
+" Commenting stuff 
+noremap <leader>/ :Commentary<cr>
+
+imap <up> <C-O>gk
+imap <down> <C-O>gj
+nmap <up> gk
+nmap <down> gj
+vmap <up> gk
+vmap <down> gj
+nnoremap <Space> :
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Tab shorcuts  
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" CTRL-Tab is next tab
+nnoremap <C-S-Left> :tabprevious<CR>
+nnoremap <C-S-Right> :tabnext<CR>
 
-noremap <C-Tab> :<C-U>tabnext<CR>
-inoremap <C-Tab> <C-\><C-N>:tabnext<CR>
-cnoremap <C-Tab> <C-C>:tabnext<CR>
+"inoremap <expr> <TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
+"inoremap <expr> <S-TAB> pumvisible() ? "\<C-p>" : "\<TAB>"
 
-"nnoremap <C-Left> :tabprevious<CR>
-"nnoremap <C-Right> :tabnext<CR>
-" nnoremap <C-w> :tabclose<CR>
-
-" CTRL-SHIFT-Tab is previous tab
-" noremap <C-S-Tab> :<C-U>tabprevious<CR>
-"inoremap <C-S-Tab> <C-\><C-N>:tabprevious<CR>
-"cnoremap <C-S-Tab> <C-C>:tabprevious<CR>
-
+inoremap <expr> <TAB> pumvisible() ? "\<C-y>" : "\<CR>"
+inoremap <expr> <Esc> pumvisible() ? "\<C-e>" : "\<Esc>"
+inoremap <expr> <j> pumvisible() ? "\<C-n>" : "\<Down>"
+inoremap <expr> <k> pumvisible() ? "\<C-p>" : "\<Up>"
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Open terminal inside Vim
@@ -464,7 +512,7 @@ end
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
-local servers = { 'rust_analyzer', 'tsserver' , 'ccls' , 'jdtls'}
+local servers = { 'rust_analyzer', 'tsserver', 'ccls', 'jdtls', 'eslint', 'pylsp', 'html', 'tailwindcss' }
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup {
     on_attach = on_attach,
@@ -486,6 +534,7 @@ require('telescope').setup{
     }
   }
 }
+
 
 require'nvim-tree'.setup {
   disable_netrw       = true,
@@ -515,7 +564,7 @@ require'nvim-tree'.setup {
     ignore_list = {}
   },
   system_open = {
-    cmd  = nil,
+    cmd  = "nautilus",
     args = {}
   },
   filters = {
@@ -550,6 +599,95 @@ require'nvim-tree'.setup {
 
 require('telescope').load_extension('fzf')
 require('telescope').load_extension('coc')
+require("telescope").load_extension('harpoon')
+
+require("toggleterm").setup{
+  open_mapping = [[<c-\>]],
+  direction = "float",
+  border = "curved",
+}
+
+require("flutter-tools").setup{}
+
+local autosave = require("autosave")
+
+autosave.setup(
+    {
+        enabled = true,
+        execution_message = "AutoSave: saved at " .. vim.fn.strftime("%H:%M:%S"),
+        events = {"InsertLeave", "TextChanged"},
+        conditions = {
+            exists = true,
+            filename_is_not = {},
+            filetype_is_not = {},
+            modifiable = true
+        },
+        write_all_buffers = false,
+        on_off_commands = true,
+        clean_command_line_interval = 0,
+        debounce_delay = 135
+    }
+)
+
+vim.opt.termguicolors = true
+vim.cmd [[highlight IndentBlanklineIndent1 guifg=#E06C75 gui=nocombine]]
+vim.cmd [[highlight IndentBlanklineIndent2 guifg=#E5C07B gui=nocombine]]
+vim.cmd [[highlight IndentBlanklineIndent3 guifg=#98C379 gui=nocombine]]
+vim.cmd [[highlight IndentBlanklineIndent4 guifg=#56B6C2 gui=nocombine]]
+vim.cmd [[highlight IndentBlanklineIndent5 guifg=#61AFEF gui=nocombine]]
+vim.cmd [[highlight IndentBlanklineIndent6 guifg=#C678DD gui=nocombine]]
+
+vim.opt.list = true
+vim.opt.listchars:append("space:⋅")
+vim.opt.listchars:append("eol:↴")
+
+require("indent_blankline").setup {
+    space_char_blankline = " ",
+    show_current_context = true,
+    show_current_context_start = true,
+}
+
+require'nvim-treesitter.configs'.setup {
+  -- One of "all", "maintained" (parsers with maintainers), or a list of languages
+  ensure_installed = "maintained",
+
+  -- Install languages synchronously (only applied to `ensure_installed`)
+  sync_install = false,
+
+
+  highlight = {
+    -- `false` will disable the whole extension
+    enable = true,
+
+    -- list of language that will be disabled
+
+    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
+    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
+    -- Using this option may slow down your editor, and you may see some duplicate highlights.
+    -- Instead of true it can also be a list of languages
+    additional_vim_regex_highlighting = true,
+  },
+}
+
+require('kanagawa').setup({
+    undercurl = true,           -- enable undercurls
+    commentStyle = "italic",
+    functionStyle = "NONE",
+    keywordStyle = "italic",
+    statementStyle = "bold",
+    typeStyle = "NONE",
+    variablebuiltinStyle = "italic",
+    specialReturn = true,       -- special highlight for the return keyword
+    specialException = true,    -- special highlight for exception handling keywords 
+    transparent = true,        -- do not set background color
+    dimInactive = false,        -- dim inactive window `:h hl-NormalNC`
+    colors = {},
+    overrides = {},
+})
+
+vim.cmd("colorscheme kanagawa")
+
+
 end 
 EOF
 
@@ -622,4 +760,7 @@ let g:nvim_tree_icons = {
 nnoremap <C-n> :NvimTreeToggle<CR>
 nnoremap <leader>r :NvimTreeRefresh<CR>
 nnoremap <leader>n :NvimTreeFindFile<CR>
+
+" autocmd ColorScheme * highlight IndentOdd guifg=NONE guibg=NONE gui=nocombine
+" autocmd ColorScheme * highlight IndentEven guifg=NONE guibg=#0000ff gui=nocombine
 
